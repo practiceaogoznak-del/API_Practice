@@ -15,14 +15,14 @@ namespace WebApplication1.Data
         {
             modelBuilder.Entity<ZadelkaRecords>(entity =>
             {
-                entity.ToTable("zadelka", "public"); // Схема и таблица
+                entity.ToTable("zadelka", "public");
 
-
+                // Правильная настройка составного ключа
                 entity.HasKey(e => new { e.series1, e.series2, e.number });
 
-                entity.Property(e => e.series1).HasColumnName("series1");
-                entity.Property(e => e.series2).HasColumnName("series2");
-                entity.Property(e => e.number).HasColumnName("number");
+                entity.Property(e => e.series1).HasColumnName("series1").IsRequired();
+                entity.Property(e => e.series2).HasColumnName("series2").IsRequired();
+                entity.Property(e => e.number).HasColumnName("number").IsRequired();
                 entity.Property(e => e.checkedtabnom).HasColumnName("checked_tabnom");
                 entity.Property(e => e.checkeddatetime).HasColumnName("checked_datetime");
             });

@@ -4,7 +4,8 @@ using WebApplication1.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -36,7 +37,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Zadelka API v1"));
 }
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ??
+                      builder.Configuration.GetConnectionString("DefaultConnection");
 
+builder.Services.AddDbContext<ZadelkaContext>(options =>
+    options.UseNpgsql(connectionString));
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseAuthorization();
